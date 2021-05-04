@@ -37,7 +37,9 @@ const authState = {
             authState.init();
     },
     init() {
+        console.warn('init');
         authState._initialized = true;
+        elements.name.textContent = 'logged out';
         // Start Sign In With Google.
         google.accounts.id.initialize({
             client_id: '194106239592-jlrrhgjv90451tiitr0jn775iea8g11d.apps.googleusercontent.com',
@@ -58,7 +60,7 @@ const authState = {
         console.log('login');
         authState._user = user;
         elements.name.textContent = user.displayName;
-        elements.logout.textContent = 'log out.';
+        elements.logout.textContent = 'Log out.';
         elements.google.style.display = 'none';
     },
     logout() {
