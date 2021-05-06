@@ -1,3 +1,4 @@
+[![Firebase Hosting](https://github.com/jrmann100/funfax/actions/workflows/firebase-hosting.yml/badge.svg)](https://github.com/jrmann100/funfax/actions/workflows/firebase-hosting.yml)
 
 # [funfax.net](https://funfax.net)
 
