@@ -3,7 +3,7 @@
 
 Faxes, but fun, because they're entirely over the internet.
 
-Built serverless on Firebase.
+Built serverless on Firebase and SvelteKit.
 
 ## Authors
 

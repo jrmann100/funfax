@@ -1,5 +1,6 @@
-firebase-debug.log
-.firebase
-node_modules
-package-lock.json
 .DS_Store
+node_modules
+/.svelte-kit
+/build
+/functions
+.firebase
