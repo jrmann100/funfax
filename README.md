@@ -4,7 +4,7 @@
 
 Faxes, but fun, because they're entirely over the internet.
 
-Built serverless on Firebase and SvelteKit.
+Built serverless on Firebase and Routify.
 
 ## Authors
 
