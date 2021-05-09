@@ -1,0 +1,49 @@
+html {
+  --black: DarkSlateGray;
+  --gray: Tan;
+  --white: PapayaWhip;
+}
+
+html, body, #routify-app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 1rem;
+  box-sizing: border-box;
+  background-color: var(--white);
+  color: var(--black);
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+#routify-app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  font-size: 1.5rem;
+}
+
+header span.latin {
+  font-size: 2rem;
+  font-family: "Pacifico", serif;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+footer {
+  font-size: 1.2rem;
+  text-align: right;
+}
+
+footer a {
+  color: inherit;
+}

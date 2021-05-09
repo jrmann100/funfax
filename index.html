@@ -12,19 +12,27 @@
 
 	<link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
-	<link
-		href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
-		rel="stylesheet"
-	/>
+	<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
 	<script src="https://accounts.google.com/gsi/client" defer></script>
+	<link rel="stylesheet" href="/global.css">
 
 
-</head >
+</head>
 
-			<body>
-				<noscript>Please enable Javascript for best experience.</noscript>
+<body>
+	<div id='routify-app'>
+		<!-- This is a fallback template which will be overwritten by HMR. -->
+		<header>
+			<span class="latin">fac simile</span> - Loading application...<noscript style='color: coral;'> failed: you
+				need
+				JavaScript.</noscript>
+		</header>
+		<main></main>
+		<footer>
 
-				<script type="module" src="/src/main.js"></script>
-	</body>
+		</footer>
+	</div>
+	<script type="module" src="/src/main.ts"></script>
+</body>
 
 </html>

@@ -20,10 +20,6 @@ export default {
     dedupe: ['@roxi/routify'],
     alias: [
       {
-        find: '$src',
-        replacement: path.resolve(__dirname, './src'),
-      },
-      {
         find: '$lib',
         replacement: path.resolve(__dirname, './src/lib'),
       },

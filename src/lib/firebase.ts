@@ -21,11 +21,12 @@ if (getApps().length === 0)
 
 export let auth = getAuth();
 export let db = getFirestore();
-export let user: Writable<User> = writable(undefined);
+// undefined = loading, null = logged out
+export let user: Writable<User | undefined | null> = writable(undefined);
 
 auth.onAuthStateChanged(user.set);
 
-window["google"].accounts.id.initialize({
+(window as any).google.accounts.id.initialize({
     client_id:
         "194106239592-jlrrhgjv90451tiitr0jn775iea8g11d.apps.googleusercontent.com",
     callback: async (c: any) =>
