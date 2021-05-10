@@ -1,75 +1,76 @@
 <script lang="ts">
-    import { user, db } from "$lib/firebase";
-    import { debounce } from "debounce";
+    import { getProfile } from "$lib/firebase";
+    import { debounce } from "$lib/utils";
     import { EmojiButton } from "@joeattardi/emoji-button";
-    import {
-        doc,
-        setDoc,
-        onSnapshot,
-        DocumentReference,
-    } from "@firebase/firestore";
-    import type { DocumentData } from "firebase/firestore";
-    import { writable } from "svelte/store";
-    import type { Writable } from "svelte/store";
 
-    function docToStore(doc: DocumentReference) {
-        const { subscribe, set, update } = writable<DocumentData | undefined>(
-            undefined
-        );
-        const saved: Writable<Boolean | undefined> = writable(undefined);
-        const debouncedUpdate = debounce((pushDoc: DocumentData) => {
-            saved.set(true);
-            setDoc(doc, pushDoc);
-        }, 1000);
-        onSnapshot(doc, (pullDoc) => set(pullDoc.data()));
-        return {
-            subscribe,
-            saved,
-            set: (pushDoc: DocumentData) => {
-                saved.set(false);
-                debouncedUpdate(pushDoc);
-            },
-        };
-    }
-
-    const profile = docToStore(doc(db, "users", $user!.uid));
-    const profileSaved = profile.saved;
+    const profile = getProfile();
+    let bioSaved: Boolean | undefined = undefined;
     const picker = new EmojiButton();
 
     picker.on("emoji", (selection) => {
         $profile!.emoji = selection.emoji;
     });
+
+    const updateBio = debounce((bio: String) => {
+        bioSaved = true;
+        $profile!.bio = bio;
+    }, 700);
+
+    const bioOnInput = (
+        e: Event & {
+            currentTarget: EventTarget & HTMLInputElement;
+        }
+    ) => {
+        bioSaved = false;
+        updateBio(e.currentTarget.value);
+    };
+    const emojiPick = (
+        e: MouseEvent & {
+            currentTarget: EventTarget & HTMLInputElement;
+        }
+    ) => picker.togglePicker(e.currentTarget);
+    let bioInput: HTMLInputElement;
 </script>
 
 {#if $profile === undefined}
     Loading profile...
 {:else}
-    <form>
+    <form on:submit={(e) => e.preventDefault()}>
         <fieldset>
-            <legend>
-                {#if $profileSaved === true}
-                    All changes saved.
-                {:else if $profileSaved === false}
-                    Saving changes.
-                {:else}
-                    Edit your profile:
-                {/if}</legend
-            >
-            <label for="emoji">Profile icon</label>
+            <legend>Your profile</legend>
+            <label for="emoji">Profile icon:</label>
             <input
                 type="button"
                 name="emoji"
-                value={$profileSaved === false ? "⏱" : $profile.emoji}
-                on:click={(e) => picker.togglePicker(e.target)}
+                value={$profile.emoji}
+                on:click={emojiPick}
             /><br />
-            <label for="bio">User bio</label>
-            <input name="bio" bind:value={$profile.bio} />
+            <label for="bio">About you:</label>
+            <!-- <input name="bio" bind:value={$profile.bio} /> -->
+            <input
+                name="bio"
+                type="text"
+                bind:this={bioInput}
+                value={$profile.bio}
+                on:input={bioOnInput}
+            />
+            {#if bioSaved === true}
+                (saved.)
+            {:else if bioSaved === false}
+                (saving...)
+            {/if}<br />
+            <input type="button" name="autosave" value="Autosave" />
+            <!-- on:click={(e) => {
+                e.currentTarget.value =
+                    "Autosaves - no need to click the save button.";
+                e.currentTarget.disabled = true;
+            }}-->
         </fieldset>
     </form>
 {/if}
 
 <svelte:window
-    on:beforeunload={$profileSaved === false
+    on:beforeunload={bioSaved === false
         ? (e) => {
               e.preventDefault();
               e.returnValue = "";
@@ -77,8 +78,13 @@
         : undefined}
 />
 
+<svelte:head>
+    <title>funfax | profile</title>
+</svelte:head>
+
 <style>
-    input[name="emoji"] {
-        font-size: 200%;
+    form {
+        line-height: 200%;
+        min-width: 90%;
     }
 </style>

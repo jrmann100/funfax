@@ -25,7 +25,11 @@
 	$ready();
 </script>
 
-<header><span class="latin">fac simile</span> - Latin, "to make a copy"</header>
+<header>
+	<a href="/">
+		<span class="latin">fac simile</span> - Latin, "to make a copy"
+	</a>
+</header>
 
 <main>
 	{#if $user !== null && $user !== undefined}
@@ -46,8 +50,11 @@
 				"https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg"}
 			alt="User-uploaded profile"
 		/> -->
-		You are <a href="/profile">{$user?.displayName}</a>.
-		<a href={"#"} on:click={async () => await auth.signOut()}>Log out.</a>
+		You are {$user.displayName}. (
+		<a href="/profile">profile</a>
+		|
+		<a href={"#"} on:click={async () => await auth.signOut()}>log out</a>
+		)
 	{/if}
 </footer>
 

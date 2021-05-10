@@ -1,8 +1,9 @@
-import type { Writable } from "svelte/store";
+import { get, Writable } from "svelte/store";
 import { initializeApp, getApps } from "firebase/app";
 import { writable } from "svelte/store";
 import type { User } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { doc, getFirestore, onSnapshot, setDoc } from "firebase/firestore";
+import type { DocumentData, DocumentReference, } from "firebase/firestore";
 import {
     GoogleAuthProvider,
     getAuth,
@@ -35,3 +36,22 @@ auth.onAuthStateChanged(user.set);
             GoogleAuthProvider.credential(c.credential)
         )
 });
+
+function docToStore(doc: DocumentReference): Writable<DocumentData | undefined> {
+    const { subscribe, set, update } = writable<DocumentData | undefined>(
+        undefined
+    );
+    onSnapshot(doc, (pullDoc) => set(pullDoc.data()));
+    return {
+        subscribe,
+        set: (pushDoc: DocumentReference) => {
+            setDoc(doc, pushDoc);
+            set(pushDoc);
+        },
+        update
+    };
+}
+
+export function getProfile(uid = get(user)!.uid) {
+ return docToStore(doc(db, "users", uid));
+}
